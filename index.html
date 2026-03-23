@@ -23,7 +23,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 10px center;
   }
-  .tabs { display: flex; gap: 4px; margin-bottom: 2rem; border-bottom: 1px solid #2a2d3a; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 2rem; border-bottom: 1px solid #2a2d3a; align-items: flex-end; }
   .tab-btn {
     background: none; border: none; color: #888; font-family: monospace; font-size: 0.85rem;
     padding: 8px 20px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
@@ -59,86 +59,24 @@
 
 <header>
   <h1>Nationale Nord-Est 2026 – Antheuil</h1>
-  <p>Analyse des splits H21</p>
+  <p>Analyse des splits</p>
 </header>
 
 <div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('c2')">MD — 21 mars · 21 postes</button>
-  <button class="tab-btn" onclick="switchTab('c1')">LD — 22 mars · 32 postes</button>
+  <button class="tab-btn active" onclick="switchTab('c2')">MD — 21 mars</button>
+  <button class="tab-btn" onclick="switchTab('c1')">LD — 22 mars</button>
+  <span style="margin-left:auto;display:flex;align-items:center;gap:8px;font-family:monospace;font-size:0.85rem;color:#888;">
+    <label>Catégorie</label>
+    <select id="catSelect" onchange="switchCat(this.value)" style="background:#1c1f2a;color:#e8e4dc;border:1px solid #333;border-radius:4px;padding:4px 24px 4px 10px;font-family:monospace;font-size:0.85rem;cursor:pointer;appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'10\' height=\'6\'%3E%3Cpath d=\'M0 0l5 6 5-6z\' fill=\'%23888\'/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 8px center;">
+      <option value="H21">H21</option>
+      <option value="H50">H50</option>
+    </select>
+  </span>
 </div>
 
-<div class="tab-panel" id="panel-c1">
-  <section>
-    <h2>Progression poste par poste</h2>
-    <p class="sub">Perte de temps cumulée vs meilleur split segment par segment</p>
-    <div class="controls">
-      <label>Afficher</label>
-      <select id="filter1">
-        <option value="top10">Top 10</option>
-        <option value="all">Tous (36)</option>
-        <option value="asul">ASUL Sports Nat</option>
-        <option value="tad">T.A.D.</option>
-        <option value="talant">Talant SO</option>
-      </select>
-      <button class="toggle-btn" id="toggleAll1">Tout décocher</button>
-    </div>
-    <div class="legend" id="legend1"></div>
-    <div class="chart-wrap"><canvas id="chart1"></canvas><div class="tooltip-box" id="tooltip1"></div></div>
-    <p style="margin-top:0.6rem;font-size:0.72rem;color:#444;font-family:monospace;">Cliquer sur un nom · Survoler pour le détail du segment</p>
-  </section>
-  <section>
-    <h2>Classement final</h2>
-    <p class="sub">Écart au vainqueur</p>
-    <div class="podium">
-      <div class="podium-card"><div style="font-size:1.1rem;margin-bottom:4px;">🥈</div><div style="font-size:0.9rem;font-weight:bold;">Thibaut Guinot</div><div style="font-size:0.75rem;color:#666;font-family:monospace;margin:2px 0;">Talant SO</div><div style="font-size:0.82rem;color:#aaa;font-family:monospace;">1:28:06 <span style="color:#666;">+4:09</span></div></div>
-      <div class="podium-card gold"><div style="font-size:1.1rem;margin-bottom:4px;">🥇</div><div style="font-size:0.9rem;font-weight:bold;color:#f0ece4;">Axel Pannier</div><div style="font-size:0.75rem;color:#666;font-family:monospace;margin:2px 0;">GO78</div><div style="font-size:0.82rem;color:#b8860b;font-family:monospace;">1:23:57</div></div>
-      <div class="podium-card"><div style="font-size:1.1rem;margin-bottom:4px;">🥉</div><div style="font-size:0.9rem;font-weight:bold;">Louison Mena</div><div style="font-size:0.75rem;color:#666;font-family:monospace;margin:2px 0;">TOAC</div><div style="font-size:0.82rem;color:#aaa;font-family:monospace;">1:28:09 <span style="color:#666;">+4:12</span></div></div>
-    </div>
-    <div id="bars1"></div>
-  </section>
-  <section>
-    <h2>Carte des craquages</h2>
-    <p class="sub">Temps perdu sur chaque segment vs meilleur split — top 20</p>
-    <div id="heatmap1" style="overflow-x:auto;"></div>
-  </section>
-</div>
+<div class="tab-panel" id="panel-c1"></div>
 
-<div class="tab-panel active" id="panel-c2">
-  <section>
-    <h2>Progression poste par poste</h2>
-    <p class="sub">Perte de temps cumulée vs meilleur split segment par segment</p>
-    <div class="controls">
-      <label>Afficher</label>
-      <select id="filter2">
-        <option value="top10">Top 10</option>
-        <option value="all">Tous (55)</option>
-        <option value="asul">ASUL</option>
-        <option value="tad">T.A.D.</option>
-        <option value="talant">Talant SO</option>
-        <option value="opa">OPA Montigny</option>
-      </select>
-      <button class="toggle-btn" id="toggleAll2">Tout décocher</button>
-    </div>
-    <div class="legend" id="legend2"></div>
-    <div class="chart-wrap"><canvas id="chart2"></canvas><div class="tooltip-box" id="tooltip2"></div></div>
-    <p style="margin-top:0.6rem;font-size:0.72rem;color:#444;font-family:monospace;">Cliquer sur un nom · Survoler pour le détail du segment</p>
-  </section>
-  <section>
-    <h2>Classement final</h2>
-    <p class="sub">Écart au vainqueur</p>
-    <div class="podium">
-      <div class="podium-card"><div style="font-size:1.1rem;margin-bottom:4px;">🥈</div><div style="font-size:0.9rem;font-weight:bold;">Romain Pichard</div><div style="font-size:0.75rem;color:#666;font-family:monospace;margin:2px 0;">6911AR</div><div style="font-size:0.82rem;color:#aaa;font-family:monospace;">34:09 <span style="color:#666;">+0:04</span></div></div>
-      <div class="podium-card gold"><div style="font-size:1.1rem;margin-bottom:4px;">🥇</div><div style="font-size:0.9rem;font-weight:bold;color:#f0ece4;">Axel Pannier</div><div style="font-size:0.75rem;color:#666;font-family:monospace;margin:2px 0;">7807IF</div><div style="font-size:0.82rem;color:#b8860b;font-family:monospace;">34:05</div></div>
-      <div class="podium-card"><div style="font-size:1.1rem;margin-bottom:4px;">🥉</div><div style="font-size:0.9rem;font-weight:bold;">Thomas Radondy</div><div style="font-size:0.75rem;color:#666;font-family:monospace;margin:2px 0;">5907HF</div><div style="font-size:0.82rem;color:#aaa;font-family:monospace;">35:54 <span style="color:#666;">+1:49</span></div></div>
-    </div>
-    <div id="bars2"></div>
-  </section>
-  <section>
-    <h2>Carte des craquages</h2>
-    <p class="sub">Temps perdu sur chaque segment vs meilleur split — top 20</p>
-    <div id="heatmap2" style="overflow-x:auto;"></div>
-  </section>
-</div>
+<div class="tab-panel active" id="panel-c2"></div>
 
 <footer style="margin-top:2.5rem;padding-top:1rem;border-top:1px solid #1c1f2a;font-size:0.72rem;color:#444;font-family:monospace;">
   NE Longue Distance H21 · 2026 · Données : splits intermédiaires officiels
@@ -828,19 +766,16 @@ const fmtMmSs = sec => {
 };
 
 function buildChart(cfg) {
-  const { runners, canvasId, legendId, filterId, tooltipId, filterOptions, palette, state } = cfg;
+  const { runners, canvasId, legendId, filterId, tooltipId, palette, state, getVisIdxOverride } = cfg;
   const allSplits = runners.map(r => getSplits(r.cum));
   const n = runners[0].cum.length + 1;
   const chartLabels = ["D", ...Array.from({length: n-2}, (_,i) => `P${i+1}`), "A"];
 
   function getVisIdx() {
+    if (getVisIdxOverride) return getVisIdxOverride(state.filter);
     const f = state.filter;
     if (f === 'top10') return Array.from({length: Math.min(10, runners.length)}, (_,i)=>i);
     if (f === 'all')   return Array.from({length: runners.length}, (_,i)=>i);
-    if (f === 'asul')  return runners.map((r,i) => (r.club==='ASUL'||r.club==='6911AR')?i:-1).filter(i=>i>=0);
-    if (f === 'tad')   return runners.map((r,i) => (r.club==='T.A.D.'||r.club==='5907HF')?i:-1).filter(i=>i>=0);
-    if (f === 'talant') return runners.map((r,i) => (r.club==='Talant SO'||r.club==='2108BF')?i:-1).filter(i=>i>=0);
-    if (f === 'opa')   return runners.map((r,i) => (r.club==='OPA Montigny'||r.club==='7707IF')?i:-1).filter(i=>i>=0);
     return Array.from({length: runners.length}, (_,i)=>i);
   }
 
@@ -1031,48 +966,626 @@ function buildBars(runners, containerId) {
 }
 
 // ============================================================
-// INIT
+// H50 — MD 21 mars — 19 temps cumulés (3×6 + 1×1)
 // ============================================================
-const state1 = { filter: "top10", hidden: new Set(), best: [], highlighted: null };
-const state2 = { filter: "top10", hidden: new Set(), best: [], highlighted: null };
+const R2_H50 = [
+  { name:"Laurent Champigny", club:"ACA AIX EN PROV", robin:false, cum:[
+    s("3:06"),s("6:01"),s("7:05"),s("11:32"),s("13:20"),s("23:31"),
+    s("25:29"),s("27:47"),s("30:37"),s("37:46"),s("39:52"),s("47:37"),
+    s("48:13"),s("50:10"),s("53:15"),s("55:48"),s("57:33"),s("57:52"),
+    s("58:24")
+  ]},
+  { name:"Fabrice Vannier", club:"BALISE 77", robin:false, cum:[
+    s("6:41"),s("9:11"),s("10:30"),s("14:59"),s("17:23"),s("29:45"),
+    s("31:19"),s("33:22"),s("36:00"),s("42:31"),s("44:40"),s("51:46"),
+    s("52:20"),s("53:57"),s("56:48"),s("58:57"),s("1:00:32"),s("1:00:48"),
+    s("1:01:21")
+  ]},
+  { name:"Nicolas Seguin", club:"Balise 63", robin:false, cum:[
+    s("3:11"),s("6:48"),s("7:55"),s("11:47"),s("13:50"),s("24:01"),
+    s("26:14"),s("31:04"),s("33:55"),s("42:41"),s("44:33"),s("51:27"),
+    s("52:02"),s("53:56"),s("57:56"),s("1:00:31"),s("1:02:02"),s("1:02:20"),
+    s("1:02:53")
+  ]},
+  { name:"Adriaan Daem", club:"GO78", robin:false, cum:[
+    s("3:16"),s("6:39"),s("7:47"),s("12:45"),s("14:40"),s("25:07"),
+    s("27:58"),s("30:25"),s("33:26"),s("41:52"),s("44:10"),s("52:23"),
+    s("52:52"),s("54:56"),s("58:29"),s("1:01:05"),s("1:02:44"),s("1:03:06"),
+    s("1:03:43")
+  ]},
+  { name:"Xavier Andrieux", club:"ECHO 73", robin:false, cum:[
+    s("3:23"),s("6:23"),s("7:19"),s("12:18"),s("13:58"),s("28:28"),
+    s("30:26"),s("32:33"),s("35:08"),s("42:02"),s("44:50"),s("52:32"),
+    s("53:06"),s("54:50"),s("57:45"),s("1:01:16"),s("1:02:51"),s("1:03:09"),
+    s("1:03:45")
+  ]},
+  { name:"Mickaël Molle", club:"BALISE 77", robin:false, cum:[
+    s("3:37"),s("8:26"),s("9:51"),s("14:11"),s("15:55"),s("29:49"),
+    s("31:57"),s("35:30"),s("38:35"),s("45:26"),s("47:25"),s("54:58"),
+    s("55:30"),s("57:02"),s("59:55"),s("1:02:00"),s("1:03:35"),s("1:03:52"),
+    s("1:04:25")
+  ]},
+  { name:"Johann Lasouche", club:"ASUL SPORTS NAT", robin:false, cum:[
+    s("7:32"),s("10:21"),s("11:15"),s("15:13"),s("17:08"),s("27:17"),
+    s("29:04"),s("31:56"),s("34:52"),s("42:03"),s("44:22"),s("53:08"),
+    s("53:45"),s("56:08"),s("59:15"),s("1:02:44"),s("1:04:12"),s("1:04:29"),
+    s("1:05:02")
+  ]},
+  { name:"Vincent Sillien", club:"ASO Sillery", robin:false, cum:[
+    s("3:04"),s("6:32"),s("7:37"),s("12:31"),s("14:22"),s("29:12"),
+    s("31:15"),s("34:05"),s("36:59"),s("44:50"),s("47:40"),s("56:12"),
+    s("56:45"),s("58:30"),s("1:01:24"),s("1:03:46"),s("1:05:08"),s("1:05:22"),
+    s("1:05:53")
+  ]},
+  { name:"Laurent Poinsenot", club:"V.H.S.O.", robin:false, cum:[
+    s("7:16"),s("10:46"),s("12:22"),s("17:04"),s("19:01"),s("29:07"),
+    s("31:28"),s("33:59"),s("37:01"),s("44:26"),s("46:51"),s("55:45"),
+    s("56:32"),s("58:26"),s("1:01:28"),s("1:04:00"),s("1:06:02"),s("1:06:19"),
+    s("1:06:52")
+  ]},
+  { name:"Christophe Goutaudier", club:"SCAPA Nancy", robin:false, cum:[
+    s("3:14"),s("7:02"),s("8:21"),s("12:31"),s("14:26"),s("28:05"),
+    s("30:10"),s("32:30"),s("35:47"),s("43:29"),s("46:20"),s("55:48"),
+    s("56:29"),s("58:22"),s("1:01:20"),s("1:04:20"),s("1:06:02"),s("1:06:26"),
+    s("1:07:03")
+  ]},
+  { name:"Freddy Grimault", club:"Poitiers CO", robin:false, cum:[
+    s("3:51"),s("7:11"),s("8:19"),s("13:48"),s("15:54"),s("27:04"),
+    s("29:20"),s("32:26"),s("35:11"),s("41:59"),s("44:49"),s("53:38"),
+    s("54:22"),s("56:24"),s("59:52"),s("1:04:30"),s("1:06:16"),s("1:06:33"),
+    s("1:07:07")
+  ]},
+  { name:"Remy Fatoux", club:"USSE CO", robin:false, cum:[
+    s("4:18"),s("7:19"),s("10:08"),s("14:36"),s("16:31"),s("27:12"),
+    s("29:03"),s("32:01"),s("35:08"),s("42:51"),s("45:20"),s("54:37"),
+    s("55:09"),s("57:23"),s("1:01:33"),s("1:04:57"),s("1:06:31"),s("1:06:49"),
+    s("1:07:26")
+  ]},
+  { name:"Jérôme Danel", club:"VALMO", robin:false, cum:[
+    s("3:57"),s("10:05"),s("11:16"),s("16:19"),s("18:31"),s("30:30"),
+    s("32:50"),s("36:14"),s("39:07"),s("46:37"),s("48:55"),s("57:05"),
+    s("57:41"),s("1:00:05"),s("1:03:22"),s("1:06:03"),s("1:07:45"),s("1:08:02"),
+    s("1:08:31")
+  ]},
+  { name:"François Janod", club:"ECHO 73", robin:false, cum:[
+    s("3:51"),s("7:58"),s("9:53"),s("15:28"),s("17:24"),s("28:33"),
+    s("30:45"),s("33:24"),s("36:36"),s("44:10"),s("46:26"),s("54:49"),
+    s("55:38"),s("57:54"),s("1:01:29"),s("1:06:14"),s("1:07:58"),s("1:08:16"),
+    s("1:08:49")
+  ]},
+  { name:"Thomas Colleter", club:"COCS", robin:false, cum:[
+    s("4:03"),s("7:57"),s("9:17"),s("14:36"),s("16:44"),s("27:48"),
+    s("29:53"),s("33:20"),s("36:13"),s("45:14"),s("48:02"),s("57:50"),
+    s("58:32"),s("1:00:46"),s("1:04:11"),s("1:07:00"),s("1:09:01"),s("1:09:24"),
+    s("1:10:04")
+  ]},
+  { name:"Bruno Plumey", club:"ASUL SPORTS NAT", robin:false, cum:[
+    s("4:21"),s("7:54"),s("9:14"),s("14:15"),s("16:07"),s("31:18"),
+    s("33:47"),s("37:25"),s("40:14"),s("47:37"),s("50:12"),s("58:56"),
+    s("59:33"),s("1:01:30"),s("1:04:59"),s("1:07:42"),s("1:09:31"),s("1:09:52"),
+    s("1:10:27")
+  ]},
+  { name:"Laurent Pineau", club:"SCAPA Nancy", robin:false, cum:[
+    s("4:01"),s("8:05"),s("9:16"),s("13:20"),s("15:30"),s("27:08"),
+    s("29:32"),s("32:24"),s("35:33"),s("45:39"),s("48:13"),s("57:00"),
+    s("57:44"),s("59:54"),s("1:03:40"),s("1:08:05"),s("1:10:10"),s("1:10:33"),
+    s("1:11:12")
+  ]},
+  { name:"Guilhem Sant", club:"BLCO", robin:false, cum:[
+    s("3:34"),s("10:32"),s("11:40"),s("16:12"),s("18:24"),s("29:08"),
+    s("31:01"),s("33:36"),s("36:52"),s("44:27"),s("47:31"),s("56:40"),
+    s("57:20"),s("59:37"),s("1:07:32"),s("1:10:58"),s("1:12:26"),s("1:12:48"),
+    s("1:13:26")
+  ]},
+  { name:"Hervé Quinquenel", club:"AS IGN", robin:false, cum:[
+    s("3:53"),s("8:02"),s("9:13"),s("14:34"),s("16:49"),s("29:14"),
+    s("31:44"),s("34:39"),s("38:16"),s("46:22"),s("48:58"),s("58:33"),
+    s("59:18"),s("1:01:33"),s("1:05:45"),s("1:10:24"),s("1:12:28"),s("1:12:53"),
+    s("1:13:26")
+  ]},
+  { name:"Pascal Rigollot", club:"V.H.S.O.", robin:false, cum:[
+    s("4:24"),s("8:39"),s("9:43"),s("14:17"),s("17:37"),s("34:00"),
+    s("36:24"),s("39:08"),s("42:54"),s("51:17"),s("53:45"),s("1:02:42"),
+    s("1:03:25"),s("1:05:31"),s("1:08:56"),s("1:13:24"),s("1:15:18"),s("1:15:35"),
+    s("1:16:09")
+  ]},
+  { name:"Yoann Moutault", club:"COTS", robin:false, cum:[
+    s("3:30"),s("7:01"),s("8:31"),s("16:54"),s("19:07"),s("31:54"),
+    s("34:12"),s("37:26"),s("40:50"),s("49:39"),s("52:38"),s("1:03:20"),
+    s("1:04:07"),s("1:07:58"),s("1:11:21"),s("1:14:49"),s("1:16:38"),s("1:17:03"),
+    s("1:17:44")
+  ]},
+  { name:"David Masson", club:"Talant SO", robin:false, cum:[
+    s("3:11"),s("13:24"),s("15:43"),s("21:03"),s("23:20"),s("36:23"),
+    s("39:06"),s("42:23"),s("46:03"),s("54:24"),s("57:16"),s("1:06:49"),
+    s("1:07:31"),s("1:09:46"),s("1:13:30"),s("1:17:42"),s("1:19:21"),s("1:19:38"),
+    s("1:20:11")
+  ]},
+  { name:"Christophe Duverney", club:"NOSE", robin:false, cum:[
+    s("4:57"),s("9:04"),s("17:33"),s("21:46"),s("23:47"),s("38:33"),
+    s("40:47"),s("43:14"),s("46:06"),s("55:30"),s("57:41"),s("1:06:31"),
+    s("1:07:09"),s("1:09:00"),s("1:12:30"),s("1:18:08"),s("1:19:42"),s("1:20:05"),
+    s("1:20:41")
+  ]},
+  { name:"Christopher Scott", club:"T.A. FAMECK", robin:false, cum:[
+    s("4:24"),s("10:42"),s("12:00"),s("18:14"),s("20:35"),s("33:56"),
+    s("37:08"),s("40:31"),s("45:28"),s("54:45"),s("57:46"),s("1:08:46"),
+    s("1:09:39"),s("1:12:12"),s("1:16:12"),s("1:21:44"),s("1:23:46"),s("1:24:12"),
+    s("1:24:50")
+  ]},
+  { name:"Bruno Cunin", club:"COMulhouse", robin:false, cum:[
+    s("3:43"),s("7:48"),s("9:34"),s("15:43"),s("17:48"),s("33:45"),
+    s("36:17"),s("40:34"),s("45:53"),s("56:14"),s("59:06"),s("1:11:12"),
+    s("1:11:52"),s("1:14:29"),s("1:18:50"),s("1:22:08"),s("1:23:56"),s("1:24:17"),
+    s("1:24:54")
+  ]},
+  { name:"Philippe Benas", club:"JSO", robin:false, cum:[
+    s("13:10"),s("16:59"),s("18:55"),s("32:04"),s("34:05"),s("46:01"),
+    s("48:04"),s("50:46"),s("54:26"),s("1:03:15"),s("1:05:43"),s("1:14:36"),
+    s("1:15:22"),s("1:17:29"),s("1:21:16"),s("1:25:36"),s("1:27:40"),s("1:28:02"),
+    s("1:28:39")
+  ]},
+  { name:"Ludovic Robert", club:"METZ'O", robin:false, cum:[
+    s("3:54"),s("7:29"),s("8:39"),s("15:18"),s("17:11"),s("36:17"),
+    s("39:19"),s("48:53"),s("52:46"),s("1:01:35"),s("1:03:58"),s("1:13:23"),
+    s("1:14:16"),s("1:16:39"),s("1:21:44"),s("1:26:00"),s("1:27:45"),s("1:28:15"),
+    s("1:29:02")
+  ]},
+  { name:"Joel Guittard", club:"ASUL SPORTS NAT", robin:false, cum:[
+    s("3:23"),s("7:31"),s("8:58"),s("15:07"),s("17:47"),s("32:20"),
+    s("35:12"),s("38:56"),s("43:04"),s("55:58"),s("59:13"),s("1:12:01"),
+    s("1:12:58"),s("1:15:48"),s("1:20:13"),s("1:25:50"),s("1:28:08"),s("1:28:36"),
+    s("1:29:20")
+  ]},
+  { name:"Olivier Mari", club:"VSAO", robin:false, cum:[
+    s("5:54"),s("9:59"),s("11:32"),s("17:22"),s("19:43"),s("37:49"),
+    s("40:16"),s("43:17"),s("47:08"),s("58:24"),s("1:01:59"),s("1:14:29"),
+    s("1:15:17"),s("1:18:15"),s("1:23:45"),s("1:28:27"),s("1:30:30"),s("1:30:52"),
+    s("1:31:29")
+  ]},
+  { name:"Florent Corcellut", club:"CO AMBERIEU", robin:false, cum:[
+    s("4:42"),s("9:24"),s("11:37"),s("22:21"),s("24:42"),s("38:08"),
+    s("43:02"),s("46:03"),s("49:53"),s("59:58"),s("1:04:04"),s("1:19:14"),
+    s("1:20:11"),s("1:25:15"),s("1:29:34"),s("1:32:45"),s("1:35:44"),s("1:36:21"),
+    s("1:37:07")
+  ]},
+  { name:"Marc Parisot", club:"VervinsO", robin:false, cum:[
+    s("9:30"),s("14:16"),s("15:35"),s("25:00"),s("27:58"),s("45:30"),
+    s("48:07"),s("51:11"),s("56:02"),s("1:06:27"),s("1:10:26"),s("1:24:17"),
+    s("1:25:08"),s("1:27:36"),s("1:32:53"),s("1:37:28"),s("1:39:36"),s("1:39:59"),
+    s("1:40:42")
+  ]},
+  { name:"Carlos Gil Silveira", club:"AS IGN", robin:false, cum:[
+    s("6:54"),s("11:55"),s("14:04"),s("21:10"),s("23:49"),s("41:25"),
+    s("44:59"),s("49:40"),s("53:56"),s("1:05:42"),s("1:09:25"),s("1:24:04"),
+    s("1:24:58"),s("1:28:18"),s("1:32:49"),s("1:37:07"),s("1:39:29"),s("1:40:07"),
+    s("1:40:50")
+  ]},
+  { name:"Emmanuel Chevreux", club:"Givry SO", robin:false, cum:[
+    s("10:37"),s("18:07"),s("19:44"),s("25:53"),s("28:56"),s("47:48"),
+    s("50:48"),s("54:02"),s("58:27"),s("1:10:49"),s("1:14:35"),s("1:28:25"),
+    s("1:29:32"),s("1:32:49"),s("1:38:40"),s("1:43:09"),s("1:45:20"),s("1:45:49"),
+    s("1:46:39")
+  ]},
+  { name:"Gilles Kerangueven", club:"CRCO", robin:false, cum:[
+    s("5:00"),s("13:37"),s("16:03"),s("24:26"),s("26:47"),s("46:02"),
+    s("48:49"),s("52:36"),s("57:05"),s("1:08:38"),s("1:12:01"),s("1:24:56"),
+    s("1:25:29"),s("1:28:21"),s("1:34:52"),s("1:43:02"),s("1:47:47"),s("1:48:15"),
+    s("1:49:04")
+  ]},
+  { name:"David Noroy", club:"BALISE 25", robin:false, cum:[
+    s("6:55"),s("12:12"),s("15:28"),s("23:18"),s("25:34"),s("53:49"),
+    s("56:46"),s("1:01:21"),s("1:06:25"),s("1:16:59"),s("1:20:25"),s("1:33:23"),
+    s("1:34:13"),s("1:37:33"),s("1:42:06"),s("1:46:39"),s("1:49:41"),s("1:50:12"),
+    s("1:50:55")
+  ]},
+  { name:"Stéphane Dewilde", club:"T.A.D.", robin:false, cum:[
+    s("6:06"),s("13:04"),s("15:11"),s("24:04"),s("28:22"),s("46:23"),
+    s("51:19"),s("58:24"),s("1:03:07"),s("1:13:38"),s("1:16:02"),s("1:26:26"),
+    s("1:27:39"),s("1:30:29"),s("1:42:34"),s("1:47:17"),s("1:50:51"),s("1:51:27"),
+    s("1:52:13")
+  ]},
+  { name:"Jérôme Perrin", club:"BALISE 25", robin:false, cum:[
+    s("4:21"),s("10:07"),s("12:06"),s("18:51"),s("21:50"),s("49:54"),
+    s("54:08"),s("57:59"),s("1:02:43"),s("1:15:59"),s("1:20:06"),s("1:35:16"),
+    s("1:36:17"),s("1:39:35"),s("1:45:27"),s("1:49:52"),s("1:52:33"),s("1:53:02"),
+    s("1:53:46")
+  ]},
+  { name:"Vesna Limhoeur", club:"ASCO ORLEANS", robin:false, cum:[
+    s("12:31"),s("21:08"),s("22:56"),s("31:58"),s("34:52"),s("49:41"),
+    s("54:04"),s("58:56"),s("1:05:03"),s("1:16:51"),s("1:20:12"),s("1:34:19"),
+    s("1:35:23"),s("1:38:15"),s("1:45:09"),s("1:50:15"),s("1:53:21"),s("1:53:53"),
+    s("1:54:43")
+  ]},
+  { name:"André Tissot", club:"OPA MONTIGNY", robin:false, cum:[
+    s("5:12"),s("21:58"),s("24:51"),s("33:12"),s("35:49"),s("50:55"),
+    s("54:50"),s("1:04:14"),s("1:08:25"),s("1:20:46"),s("1:27:59"),s("1:41:12"),
+    s("1:42:04"),s("1:45:16"),s("1:50:33"),s("1:55:35"),s("1:58:50"),s("1:59:16"),
+    s("2:00:04")
+  ]},
+  { name:"Byron Hawkins", club:"CRCO", robin:false, cum:[
+    s("6:38"),s("13:01"),s("15:00"),s("23:41"),s("27:50"),s("51:57"),
+    s("55:51"),s("1:01:27"),s("1:06:21"),s("1:17:03"),s("1:21:25"),s("1:38:05"),
+    s("1:38:54"),s("1:42:18"),s("1:47:04"),s("1:55:16"),s("1:59:39"),s("2:00:14"),
+    s("2:01:09")
+  ]},
+  { name:"Mathieu Bartoletti", club:"Talant SO", robin:false, cum:[
+    s("6:24"),s("12:29"),s("14:38"),s("24:40"),s("28:14"),s("47:15"),
+    s("51:52"),s("56:24"),s("1:02:35"),s("1:33:21"),s("1:37:19"),s("1:55:22"),
+    s("1:56:52"),s("2:01:06"),s("2:07:33"),s("2:13:42"),s("2:18:46"),s("2:19:24"),
+    s("2:20:21")
+  ]},
+];
 
-const c1 = buildChart({ runners:R1, canvasId:"chart1", legendId:"legend1", filterId:"filter1", tooltipId:"tooltip1", palette:PALETTE, state:state1 });
-const c2 = buildChart({ runners:R2, canvasId:"chart2", legendId:"legend2", filterId:"filter2", tooltipId:"tooltip2", palette:PALETTE, state:state2 });
+// ============================================================
+// H50 — MD 21 mars — 20 temps cumulés (3×6 + 2)
+// ============================================================
+const R1_H50 = [
+  { name:"Fabrice Vannier", club:"7716IF", robin:false, cum:[
+    s("6:10"),s("7:03"),s("8:06"),s("10:59"),s("12:21"),s("16:09"),
+    s("17:15"),s("20:20"),s("20:44"),s("21:42"),s("23:28"),s("25:44"),
+    s("26:59"),s("28:25"),s("30:18"),s("33:19"),s("36:32"),s("37:49"),
+    s("39:49"),s("40:13")
+  ]},
+  { name:"Xavier Andrieux", club:"7305AR", robin:false, cum:[
+    s("3:40"),s("4:54"),s("6:05"),s("9:04"),s("10:27"),s("14:40"),
+    s("15:55"),s("19:11"),s("19:38"),s("20:49"),s("22:49"),s("26:00"),
+    s("26:59"),s("28:59"),s("32:11"),s("35:28"),s("37:30"),s("38:49"),
+    s("40:57"),s("41:21")
+  ]},
+  { name:"Adriaan Daem", club:"7807IF", robin:false, cum:[
+    s("4:09"),s("5:25"),s("7:01"),s("11:55"),s("13:32"),s("17:47"),
+    s("19:03"),s("22:20"),s("22:45"),s("23:44"),s("25:31"),s("27:46"),
+    s("29:01"),s("30:28"),s("32:21"),s("35:20"),s("38:37"),s("39:53"),
+    s("41:42"),s("42:05")
+  ]},
+  { name:"Laurent Champigny", club:"1307PZ", robin:false, cum:[
+    s("3:06"),s("4:19"),s("5:37"),s("9:01"),s("10:35"),s("14:35"),
+    s("15:42"),s("19:00"),s("19:38"),s("20:57"),s("23:13"),s("26:55"),
+    s("28:05"),s("29:46"),s("32:04"),s("35:31"),s("38:03"),s("39:36"),
+    s("41:49"),s("42:08")
+  ]},
+  { name:"Remy Fatoux", club:"3809AR", robin:false, cum:[
+    s("3:08"),s("4:37"),s("5:32"),s("8:36"),s("10:59"),s("15:20"),
+    s("16:43"),s("20:18"),s("20:50"),s("22:06"),s("24:27"),s("27:29"),
+    s("28:34"),s("30:42"),s("32:29"),s("36:32"),s("39:45"),s("41:12"),
+    s("42:58"),s("43:21")
+  ]},
+  { name:"Francis Gaine", club:"2517BF", robin:false, cum:[
+    s("3:05"),s("4:22"),s("5:15"),s("8:44"),s("10:26"),s("15:11"),
+    s("16:30"),s("20:09"),s("20:38"),s("22:00"),s("24:41"),s("27:57"),
+    s("29:14"),s("31:09"),s("33:41"),s("37:03"),s("39:23"),s("41:32"),
+    s("43:24"),s("43:47")
+  ]},
+  { name:"Nicolas Seguin", club:"6307AR", robin:false, cum:[
+    s("3:14"),s("5:04"),s("6:59"),s("10:21"),s("12:10"),s("16:17"),
+    s("17:35"),s("20:44"),s("21:19"),s("22:41"),s("24:29"),s("27:23"),
+    s("28:42"),s("30:18"),s("34:07"),s("37:59"),s("40:36"),s("42:09"),
+    s("43:38"),s("43:56")
+  ]},
+  { name:"Jérôme Danel", club:"5906HF", robin:false, cum:[
+    s("4:16"),s("5:27"),s("6:35"),s("9:24"),s("11:21"),s("16:07"),
+    s("17:58"),s("21:15"),s("21:53"),s("23:13"),s("25:35"),s("28:05"),
+    s("29:28"),s("31:23"),s("34:00"),s("37:39"),s("40:10"),s("41:54"),
+    s("43:46"),s("44:06")
+  ]},
+  { name:"Laurent Poinsenot", club:"7004BF", robin:false, cum:[
+    s("3:40"),s("7:07"),s("8:29"),s("12:03"),s("13:48"),s("18:31"),
+    s("20:02"),s("23:13"),s("23:38"),s("24:56"),s("26:59"),s("29:49"),
+    s("30:57"),s("32:55"),s("36:35"),s("39:25"),s("41:28"),s("42:57"),
+    s("45:03"),s("45:25")
+  ]},
+  { name:"Guilhem Sant", club:"1905NA", robin:false, cum:[
+    s("3:19"),s("4:35"),s("5:32"),s("9:10"),s("11:49"),s("15:25"),
+    s("16:58"),s("20:18"),s("20:48"),s("22:36"),s("24:38"),s("27:41"),
+    s("28:56"),s("30:59"),s("32:59"),s("37:14"),s("44:04"),s("45:36"),
+    s("47:17"),s("47:41")
+  ]},
+  { name:"Laurent Pineau", club:"5402GE", robin:false, cum:[
+    s("3:56"),s("5:19"),s("6:38"),s("10:38"),s("12:38"),s("17:38"),
+    s("19:02"),s("22:54"),s("23:33"),s("24:57"),s("27:29"),s("30:18"),
+    s("31:41"),s("34:22"),s("37:18"),s("41:03"),s("43:48"),s("45:30"),
+    s("47:45"),s("48:09")
+  ]},
+  { name:"Christophe Duverney", club:"4201AR", robin:false, cum:[
+    s("2:47"),s("4:33"),s("5:16"),s("8:49"),s("10:29"),s("16:26"),
+    s("17:40"),s("21:24"),s("21:53"),s("23:09"),s("25:54"),s("29:21"),
+    s("30:34"),s("32:39"),s("35:50"),s("42:28"),s("45:04"),s("46:43"),
+    s("48:41"),s("49:04")
+  ]},
+  { name:"Mickaël Molle", club:"7716IF", robin:false, cum:[
+    s("3:38"),s("5:22"),s("6:22"),s("9:51"),s("16:05"),s("20:19"),
+    s("21:52"),s("26:15"),s("26:50"),s("28:06"),s("30:30"),s("33:36"),
+    s("34:57"),s("37:04"),s("40:32"),s("44:03"),s("46:06"),s("47:47"),
+    s("49:28"),s("49:48")
+  ]},
+  { name:"Bruno Plumey", club:"6911AR", robin:false, cum:[
+    s("4:48"),s("6:28"),s("8:14"),s("12:24"),s("14:34"),s("19:14"),
+    s("20:33"),s("24:13"),s("24:45"),s("26:03"),s("28:30"),s("31:23"),
+    s("32:25"),s("37:31"),s("40:03"),s("44:04"),s("47:06"),s("48:34"),
+    s("50:17"),s("50:34")
+  ]},
+  { name:"Philippe Benas", club:"3914BF", robin:false, cum:[
+    s("4:34"),s("5:41"),s("6:52"),s("10:56"),s("14:39"),s("19:55"),
+    s("21:40"),s("25:17"),s("27:43"),s("28:54"),s("31:13"),s("34:41"),
+    s("35:50"),s("38:34"),s("41:15"),s("45:10"),s("47:55"),s("49:34"),
+    s("51:31"),s("51:54")
+  ]},
+  { name:"Johann Lasouche", club:"6911AR", robin:false, cum:[
+    s("3:02"),s("5:09"),s("6:10"),s("9:40"),s("11:37"),s("15:29"),
+    s("16:46"),s("20:09"),s("21:01"),s("22:22"),s("24:50"),s("28:28"),
+    s("29:43"),s("31:48"),s("34:28"),s("38:21"),s("42:08"),s("49:06"),
+    s("51:49"),s("52:23")
+  ]},
+  { name:"Vincent Sillien", club:"5116GE", robin:false, cum:[
+    s("4:19"),s("6:20"),s("7:37"),s("11:27"),s("13:10"),s("21:02"),
+    s("22:39"),s("25:52"),s("28:16"),s("29:38"),s("32:28"),s("35:32"),
+    s("36:45"),s("38:27"),s("41:40"),s("46:11"),s("48:52"),s("50:45"),
+    s("52:23"),s("52:46")
+  ]},
+  { name:"David Masson", club:"2108BF", robin:false, cum:[
+    s("6:56"),s("9:04"),s("10:08"),s("13:52"),s("16:10"),s("21:10"),
+    s("22:35"),s("26:25"),s("26:59"),s("28:26"),s("30:51"),s("33:56"),
+    s("35:25"),s("37:54"),s("41:20"),s("45:19"),s("49:25"),s("51:08"),
+    s("53:37"),s("54:02")
+  ]},
+  { name:"François Janod", club:"7305AR", robin:false, cum:[
+    s("4:33"),s("5:58"),s("7:48"),s("12:28"),s("16:05"),s("21:59"),
+    s("23:41"),s("27:33"),s("30:00"),s("31:55"),s("34:31"),s("37:26"),
+    s("38:48"),s("40:59"),s("44:25"),s("48:32"),s("51:19"),s("52:52"),
+    s("54:33"),s("54:55")
+  ]},
+  { name:"Ludovic Robert", club:"5716GE", robin:false, cum:[
+    s("3:39"),s("6:43"),s("7:29"),s("11:30"),s("13:37"),s("18:27"),
+    s("20:38"),s("25:39"),s("26:19"),s("27:49"),s("31:10"),s("35:03"),
+    s("36:37"),s("38:32"),s("42:24"),s("46:51"),s("50:11"),s("52:27"),
+    s("55:01"),s("55:23")
+  ]},
+  { name:"Hervé Quinquenel", club:"9404IF", robin:false, cum:[
+    s("3:19"),s("5:05"),s("8:11"),s("12:34"),s("14:29"),s("19:33"),
+    s("21:19"),s("25:52"),s("27:03"),s("29:01"),s("32:02"),s("35:08"),
+    s("36:43"),s("38:49"),s("41:54"),s("46:56"),s("50:17"),s("52:28"),
+    s("55:27"),s("55:52")
+  ]},
+  { name:"Freddy Grimault", club:"8607NA", robin:false, cum:[
+    s("3:25"),s("6:44"),s("7:55"),s("11:38"),s("16:15"),s("21:42"),
+    s("23:18"),s("26:45"),s("27:59"),s("29:06"),s("31:29"),s("34:30"),
+    s("35:54"),s("37:39"),s("40:11"),s("47:29"),s("51:51"),s("53:43"),
+    s("55:38"),s("56:04")
+  ]},
+  { name:"Jean-Pierre Geromey", club:"8813GE", robin:false, cum:[
+    s("4:25"),s("5:43"),s("7:58"),s("12:03"),s("13:54"),s("19:52"),
+    s("21:42"),s("25:55"),s("26:34"),s("28:09"),s("32:55"),s("36:17"),
+    s("37:42"),s("40:24"),s("43:43"),s("48:30"),s("52:30"),s("54:37"),
+    s("57:10"),s("57:32")
+  ]},
+  { name:"Christopher Scott", club:"5703GE", robin:false, cum:[
+    s("4:15"),s("5:59"),s("8:13"),s("12:30"),s("14:20"),s("20:59"),
+    s("22:39"),s("27:13"),s("28:04"),s("30:04"),s("33:17"),s("36:31"),
+    s("38:02"),s("40:41"),s("43:35"),s("51:34"),s("55:17"),s("57:21"),
+    s("1:00:14"),s("1:00:38")
+  ]},
+  { name:"Bruno Cunin", club:"6803GE", robin:false, cum:[
+    s("3:43"),s("5:55"),s("7:13"),s("11:25"),s("17:01"),s("23:22"),
+    s("24:55"),s("29:58"),s("30:41"),s("32:51"),s("35:23"),s("38:54"),
+    s("40:55"),s("44:08"),s("47:43"),s("53:55"),s("57:10"),s("59:20"),
+    s("1:01:33"),s("1:01:49")
+  ]},
+  { name:"Yoann Moutault", club:"3705CE", robin:false, cum:[
+    s("3:13"),s("5:29"),s("6:38"),s("10:10"),s("14:12"),s("19:11"),
+    s("20:58"),s("26:10"),s("28:25"),s("29:55"),s("33:29"),s("37:29"),
+    s("38:53"),s("40:47"),s("43:29"),s("53:15"),s("56:58"),s("59:39"),
+    s("1:01:48"),s("1:02:13")
+  ]},
+  { name:"Florent Corcellut", club:"0111AR", robin:false, cum:[
+    s("4:25"),s("5:51"),s("6:55"),s("11:36"),s("13:33"),s("22:45"),
+    s("24:44"),s("29:23"),s("30:00"),s("31:38"),s("34:30"),s("38:35"),
+    s("40:21"),s("43:05"),s("46:44"),s("50:46"),s("57:52"),s("59:33"),
+    s("1:01:50"),s("1:02:20")
+  ]},
+  { name:"Olivier Mari", club:"0615PZ", robin:false, cum:[
+    s("4:14"),s("5:55"),s("7:05"),s("10:57"),s("13:26"),s("25:56"),
+    s("27:35"),s("31:57"),s("32:39"),s("34:21"),s("37:37"),s("41:38"),
+    s("43:24"),s("45:30"),s("48:39"),s("53:20"),s("56:45"),s("59:17"),
+    s("1:02:29"),s("1:02:51")
+  ]},
+  { name:"Pascal Rigollot", club:"7004BF", robin:false, cum:[
+    s("9:21"),s("10:54"),s("12:14"),s("15:53"),s("18:02"),s("24:04"),
+    s("25:48"),s("29:46"),s("32:23"),s("33:55"),s("37:33"),s("42:35"),
+    s("44:04"),s("45:50"),s("48:41"),s("57:19"),s("1:00:43"),s("1:02:59"),
+    s("1:04:54"),s("1:05:20")
+  ]},
+  { name:"Emmanuel Chevreux", club:"7109BF", robin:false, cum:[
+    s("5:09"),s("6:45"),s("9:06"),s("14:27"),s("19:31"),s("26:07"),
+    s("27:56"),s("32:59"),s("33:50"),s("36:03"),s("40:16"),s("45:19"),
+    s("47:18"),s("50:10"),s("53:57"),s("59:03"),s("1:02:31"),s("1:04:38"),
+    s("1:07:15"),s("1:07:44")
+  ]},
+  { name:"André Tissot", club:"7707IF", robin:false, cum:[
+    s("4:48"),s("6:37"),s("9:20"),s("13:51"),s("18:18"),s("24:48"),
+    s("28:07"),s("33:32"),s("34:08"),s("36:10"),s("39:19"),s("44:56"),
+    s("46:56"),s("50:25"),s("53:34"),s("1:00:09"),s("1:03:38"),s("1:05:47"),
+    s("1:08:25"),s("1:08:50")
+  ]},
+  { name:"Yannick Golmard", club:"2101BF", robin:false, cum:[
+    s("5:10"),s("6:49"),s("8:00"),s("12:49"),s("15:17"),s("25:08"),
+    s("31:19"),s("38:54"),s("39:28"),s("41:21"),s("45:11"),s("49:13"),
+    s("50:53"),s("53:15"),s("56:14"),s("1:01:17"),s("1:06:28"),s("1:08:36"),
+    s("1:10:42"),s("1:11:08")
+  ]},
+  { name:"Marc Parisot", club:"0207HF", robin:false, cum:[
+    s("6:10"),s("8:18"),s("9:41"),s("15:55"),s("18:51"),s("26:10"),
+    s("28:32"),s("34:02"),s("34:47"),s("36:40"),s("39:48"),s("44:27"),
+    s("46:11"),s("49:37"),s("53:10"),s("59:43"),s("1:04:51"),s("1:07:29"),
+    s("1:11:01"),s("1:11:27")
+  ]},
+  { name:"Jérôme Perrin", club:"2508BF", robin:false, cum:[
+    s("4:45"),s("7:05"),s("10:04"),s("16:30"),s("18:40"),s("26:01"),
+    s("27:53"),s("32:39"),s("33:28"),s("35:32"),s("41:51"),s("47:22"),
+    s("49:29"),s("52:55"),s("56:43"),s("1:02:43"),s("1:07:51"),s("1:10:44"),
+    s("1:13:52"),s("1:14:17")
+  ]},
+  { name:"Gilles Kerangueven", club:"3502BR", robin:false, cum:[
+    s("5:30"),s("7:21"),s("10:08"),s("14:32"),s("17:03"),s("25:08"),
+    s("27:20"),s("32:29"),s("33:16"),s("36:18"),s("39:34"),s("47:37"),
+    s("49:32"),s("52:38"),s("57:05"),s("1:03:34"),s("1:08:07"),s("1:11:13"),
+    s("1:14:06"),s("1:14:32")
+  ]},
+  { name:"Carlos Gil Silveira", club:"9404IF", robin:false, cum:[
+    s("5:06"),s("7:08"),s("9:45"),s("16:32"),s("18:59"),s("29:44"),
+    s("31:29"),s("37:04"),s("37:59"),s("40:00"),s("43:38"),s("48:29"),
+    s("50:24"),s("53:43"),s("57:10"),s("1:04:01"),s("1:08:07"),s("1:11:09"),
+    s("1:14:36"),s("1:15:04")
+  ]},
+  { name:"Jan Sliva", club:"5906HF", robin:false, cum:[
+    s("5:44"),s("7:34"),s("10:10"),s("22:38"),s("25:54"),s("33:35"),
+    s("36:18"),s("42:11"),s("43:21"),s("45:41"),s("49:43"),s("54:28"),
+    s("56:17"),s("59:18"),s("1:03:00"),s("1:09:18"),s("1:13:41"),s("1:16:23"),
+    s("1:19:23"),s("1:19:49")
+  ]},
+  { name:"Vesna Limhoeur", club:"4504CE", robin:false, cum:[
+    s("8:37"),s("10:07"),s("11:37"),s("16:25"),s("21:41"),s("37:29"),
+    s("39:59"),s("45:49"),s("46:48"),s("48:37"),s("57:59"),s("1:03:26"),
+    s("1:05:13"),s("1:07:32"),s("1:10:47"),s("1:16:34"),s("1:20:45"),s("1:23:59"),
+    s("1:28:02"),s("1:28:22")
+  ]},
+  { name:"Stéphane Dewilde", club:"5907HF", robin:false, cum:[
+    s("10:51"),s("12:34"),s("15:32"),s("22:45"),s("27:02"),s("34:34"),
+    s("37:17"),s("43:41"),s("44:46"),s("46:50"),s("50:45"),s("55:14"),
+    s("57:32"),s("1:06:11"),s("1:16:30"),s("1:24:06"),s("1:32:43"),s("1:34:23"),
+    s("1:41:12"),s("1:41:56")
+  ]},
+  { name:"Gaëtan Gourapa", club:"2108BF", robin:false, cum:[
+    s("4:45"),s("7:33"),s("11:20"),s("22:45"),s("27:22"),s("39:13"),
+    s("41:36"),s("49:13"),s("50:11"),s("52:18"),s("58:28"),s("1:03:12"),
+    s("1:05:23"),s("1:08:12"),s("1:20:07"),s("1:26:41"),s("1:34:42"),s("1:38:14"),
+    s("1:41:39"),s("1:42:04")
+  ]},
+  { name:"Byron Hawkins", club:"3502BR", robin:false, cum:[
+    s("17:06"),s("20:50"),s("26:22"),s("37:09"),s("40:53"),s("49:15"),
+    s("53:04"),s("1:00:15"),s("1:02:52"),s("1:06:06"),s("1:11:17"),s("1:15:53"),
+    s("1:19:42"),s("1:23:56"),s("1:30:18"),s("1:37:59"),s("1:44:08"),s("1:47:05"),
+    s("1:51:30"),s("1:52:08")
+  ]},
+  { name:"Christophe Dagois", club:"2517BF", robin:false, cum:[
+    s("11:17"),s("13:30"),s("15:18"),s("20:33"),s("23:07"),s("35:29"),
+    s("37:31"),s("45:25"),s("46:06"),s("48:07"),s("1:00:55"),s("1:06:41"),
+    s("1:10:53"),s("1:19:04"),s("1:39:01"),s("1:53:05"),s("1:59:12"),s("2:02:31"),
+    s("2:05:20"),s("2:05:52")
+  ]},
+];
+const DATA = {
+  H21: { md: R2, ld: R1 },
+  H50: { md: R1_H50, ld: R2_H50 },
+};
 
-buildBars(R1, "bars1");
-buildBars(R2, "bars2");
+const CAT_FILTERS = {
+  H21: {
+    md: [
+      { val:"top10", label:"Top 10" },
+      { val:"all", label:"Tous (55)" },
+      { val:"asul", label:"ASUL" },
+      { val:"tad", label:"T.A.D." },
+      { val:"talant", label:"Talant SO" },
+      { val:"opa", label:"OPA Montigny" },
+    ],
+    ld: [
+      { val:"top10", label:"Top 10" },
+      { val:"all", label:"Tous (36)" },
+      { val:"asul", label:"ASUL Sports Nat" },
+      { val:"tad", label:"T.A.D." },
+      { val:"talant", label:"Talant SO" },
+    ],
+  },
+  H50: {
+    md: [
+      { val:"top10", label:"Top 10" },
+      { val:"all", label:"Tous (43)" },
+      { val:"asul", label:"ASUL Sports Nat" },
+    ],
+    ld: [
+      { val:"top10", label:"Top 10" },
+      { val:"all", label:"Tous (41)" },
+      { val:"asul", label:"ASUL Sports Nat" },
+    ],
+  },
+};
 
-buildHeatmap(R1, "heatmap1", Math.floor(R1.length * 0.8));
-buildHeatmap(R2, "heatmap2", Math.floor(R2.length * 0.8));
+const PODIUMS = {
+  H21: {
+    md: { p1:["Axel Pannier","7807IF","34:05"], p2:["Romain Pichard","6911AR","34:09","+0:04"], p3:["Thomas Radondy","5907HF","35:54","+1:49"] },
+    ld: { p1:["Axel Pannier","GO78","1:23:57"], p2:["Thibaut Guinot","Talant SO","1:28:06","+4:09"], p3:["Louison Mena","TOAC","1:28:09","+4:12"] },
+  },
+  H50: {
+    md: { p1:["Fabrice Vannier","7716IF","40:13"], p2:["Xavier Andrieux","7305AR","41:21","+1:08"], p3:["Adriaan Daem","7807IF","42:05","+1:52"] },
+    ld: { p1:["Laurent Champigny","ACA AIX EN PROV","58:24"], p2:["Fabrice Vannier","BALISE 77","1:01:21","+2:57"], p3:["Nicolas Seguin","Balise 63","1:02:53","+4:29"] },
+  },
+};
 
-setupToggleAll("toggleAll1", state1, c1.getVisIdx, c1.rebuild, c1.mkLegend);
-setupToggleAll("toggleAll2", state2, c2.getVisIdx, c2.rebuild, c2.mkLegend);
 
-function buildHeatmap(runners, containerId, maxRunners) {
+function buildHeatmap(runners, containerId, maxRunners, suffix) {
   const n = runners[0].cum.length;
   const shown = runners.slice(0, maxRunners);
   const allSpl = runners.map(r => getSplits(r.cum));
   const bestAll = Array.from({length: n+1}, (_, j) =>
     Math.min(...allSpl.map(s => s[j]))
   );
+
+  // Niveau du coureur = moyenne tronquée à 10% de ses ratios de splits
+  // (on retire les 10% meilleurs et 10% moins bons pour avoir la vitesse de croisière)
+  function trimmedMean(arr, pct) {
+    const sorted = [...arr].sort((a, b) => a - b);
+    const cut = Math.floor(sorted.length * pct);
+    const trimmed = sorted.slice(cut, sorted.length - cut);
+    return trimmed.reduce((a, b) => a + b, 0) / trimmed.length;
+  }
+
+  const factors = runners.map((r, i) => {
+    const spl = allSpl[i];
+    const ratios = Array.from({length: n}, (_, j) => {
+      const best = bestAll[j+1];
+      return best > 0 ? spl[j+1] / best : 1;
+    });
+    return trimmedMean(ratios, 0.1);
+  });
+
+  // Perte relative : temps réel - temps attendu (= meilleur split × facteur)
   const losses = shown.map((r, i) => {
     const spl = allSpl[i];
-    return Array.from({length: n}, (_, j) => spl[j+1] - bestAll[j+1]);
+    const factor = factors[i];
+    return Array.from({length: n}, (_, j) => spl[j+1] - bestAll[j+1] * factor);
   });
-  const maxLoss = Math.max(...losses.flat());
 
-  function lossColor(val) {
-    if (val <= 0) return "#1a3a1a";
-    const ratio = Math.min(val / Math.max(maxLoss * 0.6, 60), 1);
-    if (ratio < 0.33) {
-      const t = ratio / 0.33;
-      return `rgb(${Math.round(30+t*180)},${Math.round(100+t*80)},20)`;
-    } else if (ratio < 0.66) {
-      const t = (ratio-0.33)/0.33;
-      return `rgb(${Math.round(210+t*30)},${Math.round(180-t*90)},20)`;
+  // Normalisation séparée pour les deux côtés, zéro = vert pâle
+  const colMin = Array.from({length: n}, (_, j) => Math.min(...losses.map(l => l[j])));
+  const colMax = Array.from({length: n}, (_, j) => Math.max(...losses.map(l => l[j])));
+
+  function lossColor(val, j) {
+    if (val < 0) {
+      // Meilleur qu'attendu : vert pâle → vert flashy
+      const t = colMin[j] !== 0 ? Math.min(1, val / colMin[j]) : 0;
+      const r = Math.round(20 - t * 15);
+      const g = Math.round(80 + t * 150);
+      const b = Math.round(20 - t * 10);
+      return `rgb(${r},${g},${b})`;
     } else {
-      const t = (ratio-0.66)/0.34;
-      return `rgb(240,${Math.round(90-t*70)},20)`;
+      // Moins bon qu'attendu : vert pâle → rouge
+      const t = colMax[j] !== 0 ? Math.min(1, val / colMax[j]) : 0;
+      let r, g;
+      if (t < 0.33) {
+        const x = t / 0.33;
+        r = Math.round(80 + x * 175);
+        g = Math.round(120 - x * 30);
+      } else if (t < 0.66) {
+        const x = (t - 0.33) / 0.33;
+        r = 255;
+        g = Math.round(90 - x * 50);
+      } else {
+        const x = (t - 0.66) / 0.34;
+        r = 255;
+        g = Math.round(40 - x * 40);
+      }
+      return `rgb(${r},${g},0)`;
     }
   }
 
@@ -1098,27 +1611,48 @@ function buildHeatmap(runners, containerId, maxRunners) {
   html += `</tr>`;
 
   shown.forEach((r, i) => {
-    const isAsul = r.club === "ASUL" || r.club === "6911AR";
+    const isAsul = r.club === "ASUL" || r.club === "ASUL SPORTS NAT" || r.club === "6911AR";
     const nameColor = isAsul ? "#7ec86a" : "#c0bdb5";
     html += `<tr>`;
     html += `<td style="color:${nameColor};padding:1px 8px 1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${nameW}px;" title="${r.name}">${r.name}</td>`;
     losses[i].forEach((loss, j) => {
-      const bg = lossColor(loss);
-      const lossStr = loss <= 1 ? "+0:00" : loss < 60 ? `+0:${String(Math.round(loss)).padStart(2,'0')}` : `+${fmtMmSs(loss)}`;
-      html += `<td data-loss="${lossStr}" data-name="${r.name}" data-seg="${segLabels[j]}" style="background:${bg};width:${cellW}px;height:${cellH}px;cursor:default;"></td>`;
+      const bg = lossColor(loss, j);
+      const absLoss = Math.abs(loss);
+      const sign = loss < -1 ? "-" : "+";
+      const lossStr = Math.abs(loss) <= 1 ? "±0:00"
+        : absLoss < 60 ? `${sign}0:${String(Math.round(absLoss)).padStart(2,'0')}`
+        : `${sign}${fmtMmSs(absLoss)}`;
+      html += `<td data-loss="${loss.toFixed(1)}" data-name="${r.name}" data-seg="${segLabels[j]}" style="background:${bg};width:${cellW}px;height:${cellH}px;cursor:default;"></td>`;
     });
     html += `</tr>`;
   });
   html += `</table>`;
   wrap.innerHTML = html;
 
+  // Légende gradient
+  const legendEl = document.getElementById("legend-heatmap" + containerId.replace("heatmap", ""));
+  if (legendEl) {
+    legendEl.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;font-family:monospace;font-size:11px;color:#555;">
+        <span style="white-space:nowrap;">meilleur qu'attendu</span>
+        <div style="width:120px;height:10px;border-radius:4px 0 0 4px;background:linear-gradient(to right,rgb(5,230,10),rgb(20,80,20));"></div>
+        <div style="width:120px;height:10px;border-radius:0 4px 4px 0;background:linear-gradient(to right,rgb(80,120,0),rgb(255,0,0));"></div>
+        <span style="white-space:nowrap;">moins bon qu'attendu</span>
+      </div>`;
+  }
+
   wrap.querySelectorAll("td[data-loss]").forEach(cell => {
     cell.addEventListener("mouseenter", e => {
       cell.style.outline = "1px solid #fff";
       const seg = cell.dataset.seg;
       const name = cell.dataset.name;
-      const loss = cell.dataset.loss;
-      tipEl.innerHTML = `<span style="color:#888">${seg === "A" ? "Arrivée" : seg.replace("P","Poste ")} · ${name}</span><br><span style="color:${loss==="+0:00"?"#4aaa88":"#e8784a"}">${loss}</span>`;
+      const loss = parseFloat(cell.dataset.loss);
+      const absLoss = Math.abs(loss);
+      const sign = loss < -1 ? "-" : "+";
+      const lossStr = absLoss <= 1 ? "±0:00"
+        : absLoss < 60 ? `${sign}0:${String(Math.round(absLoss)).padStart(2,'0')}`
+        : `${sign}${fmtMmSs(absLoss)}`;
+      tipEl.innerHTML = `<span style="color:#888">${seg === "A" ? "Arrivée" : seg.replace("P","Poste ")} · ${name}</span><br><span style="color:${loss < -1 ? "#4aaa88" : absLoss <= 1 ? "#888" : "#e8784a"}">${lossStr}</span>`;
       tipEl.style.display = "block";
     });
     cell.addEventListener("mousemove", e => {
@@ -1132,15 +1666,9 @@ function buildHeatmap(runners, containerId, maxRunners) {
   });
 }
 
-function switchTab(id) {
-  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-  document.getElementById("panel-" + id).classList.add("active");
-  event.target.classList.add("active");
-}
-
 function setupToggleAll(btnId, state, getVisIdx, rebuild, mkLegend) {
   const btn = document.getElementById(btnId);
+  if (!btn) return;
   btn.addEventListener("click", () => {
     const vis = getVisIdx();
     const allHidden = vis.every(i => state.hidden.has(i));
@@ -1156,6 +1684,105 @@ function setupToggleAll(btnId, state, getVisIdx, rebuild, mkLegend) {
     mkLegend(vis);
   });
 }
-</script>
+
+// ============================================================
+// INIT DYNAMIQUE
+// ============================================================
+let charts = {};
+
+function getFilterFn(val, runners) {
+  if (val === 'top10')  return Array.from({length: Math.min(10, runners.length)}, (_,i)=>i);
+  if (val === 'all')    return Array.from({length: runners.length}, (_,i)=>i);
+  if (val === 'asul')   return runners.map((r,i) => (r.club==='ASUL'||r.club==='ASUL SPORTS NAT'||r.club==='6911AR')?i:-1).filter(i=>i>=0);
+  if (val === 'tad')    return runners.map((r,i) => (r.club==='T.A.D.'||r.club==='5907HF')?i:-1).filter(i=>i>=0);
+  if (val === 'talant') return runners.map((r,i) => (r.club==='Talant SO'||r.club==='2108BF')?i:-1).filter(i=>i>=0);
+  if (val === 'opa')    return runners.map((r,i) => (r.club==='OPA Montigny'||r.club==='OPA MONTIGNY'||r.club==='7707IF')?i:-1).filter(i=>i>=0);
+  return Array.from({length: runners.length}, (_,i)=>i);
+}
+
+function renderCourse(courseKey) {
+  const cat = currentCat;
+  const courseId = courseKey === 'c1' ? 'ld' : 'md';
+  const runners = DATA[cat][courseId];
+  const filters = CAT_FILTERS[cat][courseId];
+  const podium = PODIUMS[cat][courseId];
+  const suffix = courseKey === 'c1' ? '1' : '2';
+  const panel = document.getElementById('panel-' + courseKey);
+
+  if (!runners) {
+    panel.innerHTML = `<section style="padding:3rem 0;text-align:center;color:#555;font-family:monospace;">Pas de données pour ${cat} en ${courseId.toUpperCase()}.</section>`;
+    return;
+  }
+
+  const nPostes = runners[0].cum.length;
+  const filterOpts = filters.map(f => `<option value="${f.val}">${f.label}</option>`).join('');
+
+  const podiumHtml = podium ? `
+    <div class="podium">
+      <div class="podium-card"><div style="font-size:1.1rem;margin-bottom:4px;">🥈</div><div style="font-size:0.9rem;font-weight:bold;">${podium.p2[0]}</div><div style="font-size:0.75rem;color:#666;font-family:monospace;margin:2px 0;">${podium.p2[1]}</div><div style="font-size:0.82rem;color:#aaa;font-family:monospace;">${podium.p2[2]} <span style="color:#666;">${podium.p2[3]||''}</span></div></div>
+      <div class="podium-card gold"><div style="font-size:1.1rem;margin-bottom:4px;">🥇</div><div style="font-size:0.9rem;font-weight:bold;color:#f0ece4;">${podium.p1[0]}</div><div style="font-size:0.75rem;color:#666;font-family:monospace;margin:2px 0;">${podium.p1[1]}</div><div style="font-size:0.82rem;color:#b8860b;font-family:monospace;">${podium.p1[2]}</div></div>
+      <div class="podium-card"><div style="font-size:1.1rem;margin-bottom:4px;">🥉</div><div style="font-size:0.9rem;font-weight:bold;">${podium.p3[0]}</div><div style="font-size:0.75rem;color:#666;font-family:monospace;margin:2px 0;">${podium.p3[1]}</div><div style="font-size:0.82rem;color:#aaa;font-family:monospace;">${podium.p3[2]} <span style="color:#666;">${podium.p3[3]||''}</span></div></div>
+    </div>` : '';
+
+  panel.innerHTML = `
+    <section>
+      <h2>Progression poste par poste</h2>
+      <p class="sub">${nPostes} postes · Perte de temps cumulée vs meilleur split segment par segment</p>
+      <div class="controls">
+        <label>Afficher</label>
+        <select id="filter${suffix}">${filterOpts}</select>
+        <button class="toggle-btn" id="toggleAll${suffix}">Tout décocher</button>
+      </div>
+      <div class="legend" id="legend${suffix}"></div>
+      <div class="chart-wrap"><canvas id="chart${suffix}"></canvas><div class="tooltip-box" id="tooltip${suffix}"></div></div>
+      <p style="margin-top:0.6rem;font-size:0.72rem;color:#444;font-family:monospace;">Cliquer sur un nom · Survoler pour le détail du segment</p>
+    </section>
+    <section>
+      <h2>Classement final</h2>
+      <p class="sub">Écart au vainqueur</p>
+      ${podiumHtml}
+      <div id="bars${suffix}"></div>
+    </section>
+    <section>
+      <h2>Carte des craquages</h2>
+      <p class="sub">Vert flashy = meilleur que son niveau attendu · vert pâle = dans la norme · rouge = craquage</p>
+      <div id="legend-heatmap${suffix}" style="margin-bottom:10px;"></div>
+      <div id="heatmap${suffix}" style="overflow-x:auto;"></div>
+    </section>
+  `;
+
+  if (charts[suffix]) { try { charts[suffix].destroy(); } catch(e){} delete charts[suffix]; }
+
+  const state = { filter: "top10", hidden: new Set(), best: [], highlighted: null };
+  const chartObj = buildChart({
+    runners, canvasId:`chart${suffix}`, legendId:`legend${suffix}`,
+    filterId:`filter${suffix}`, tooltipId:`tooltip${suffix}`,
+    palette:PALETTE, state,
+    getVisIdxOverride: (f) => getFilterFn(f, runners),
+  });
+  charts[suffix] = chartObj;
+
+  buildBars(runners, `bars${suffix}`);
+  buildHeatmap(runners, `heatmap${suffix}`, Math.floor(runners.length * 0.8), suffix);
+  setupToggleAll(`toggleAll${suffix}`, state, chartObj.getVisIdx, chartObj.rebuild, chartObj.mkLegend);
+}
+
+function switchCat(cat) {
+  currentCat = cat;
+  renderCourse('c1');
+  renderCourse('c2');
+}
+
+function switchTab(id) {
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("panel-" + id).classList.add("active");
+  event.target.classList.add("active");
+}
+
+let currentCat = "H21";
+
+renderCourse('c1');
+renderCourse('c2');</script>
 </body>
 </html>
